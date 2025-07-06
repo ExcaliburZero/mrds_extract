@@ -1,0 +1,7 @@
+[project]
+name = "mrds-extract"
+version = "0.1.0"
+description = "Tool for extracting data from Monster Rancher DS"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
