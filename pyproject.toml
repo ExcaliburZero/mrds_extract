@@ -16,6 +16,9 @@ mrds-extract-save = "mrds_extract.extract_save:main_without_args"
 packages = ["mrds_util", "mrds_extract"]
 
 [tool.taskipy.tasks]
+format = "task format_ruff_imports && task format_ruff_format"
+format_ruff_imports = "ruff check --select I --fix ."
+format_ruff_format = "ruff format"
 lint = "task lint_ty && task lint_ruff && task lint_ruff_format"
 lint_ty = "ty check"
 lint_ruff = "ruff check"
