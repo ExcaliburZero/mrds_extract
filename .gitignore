@@ -1,3 +1,7 @@
+.coverage
+coverage.info
+.qlty/
+
 # Python-generated files
 __pycache__/
 *.py[oc]
