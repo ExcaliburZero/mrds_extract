@@ -44,6 +44,13 @@ def main(argv: list[str]) -> int:
         with save_file_path.open("rb") as input_stream:
             save_file = SaveFile.from_bin(input_stream)
 
+        for save_entry in save_file.entries:
+            # save_entry.monsters[0].power = 999
+            save_entry.ranch_name = "Undertale".encode("ascii")
+            save_entry.update_checksum()
+
+        # print(save_file.entries[0].monsters[0].power)
+
         # with save_file_path.open("rb") as input_stream:
         #    input_stream.read(30 + 64)
         #    s = 0
@@ -52,7 +59,12 @@ def main(argv: list[str]) -> int:
         #        s = (s + c) & 0xFFFFFFFF
 
         # logger.info(save_file)
-        logger.info(f"{save_file.entries[0].calculate_checksum():#010x}")
+        # logger.info(f"{save_file.entries[0].calculate_checksum():#010x}")
+
+        output_filepath = save_file_path.with_name("updated.sav")
+        with output_filepath.open("wb") as output_stream:
+            save_file.write_bin(output_stream)
+        logger.info(f"Wrote updated save file to: {output_filepath}")
 
         # logger.info(s.to_bytes(4, "little"))
 

@@ -43,6 +43,11 @@ class SaveEntry(BinaryReadWriteable):
     player_name: Annotated[bytes, 13]
     unknown_c: Annotated[bytes, 416]
     monsters: Annotated[list[Monster], 31]  # Current monster, then 30 in storage
+    unknown_e: Annotated[bytes, 2104]
+    checksum: dcs.U32
+
+    def update_checksum(self) -> None:
+        self.checksum = self.calculate_checksum()
 
     def calculate_checksum(self) -> int:
         checksum: int = 0xFFFFFFFF
@@ -315,11 +320,17 @@ class SaveEntry(BinaryReadWriteable):
 
         output_stream = io.BytesIO()
         self.write_bin(output_stream)
+        data = bytearray(output_stream.getbuffer())
+
+        # print(data)
+
+        # TODO: figure out what to do with this
+        # data[0] += 1
 
         # for byte in output_stream.getbuffer()[0:56]:
         print("initial", hex(checksum))
         # for byte in [0x0000004A]:
-        for byte in output_stream.getbuffer()[0:56]:
+        for byte in data[0:56]:
             # for byte in output_stream.getbuffer()[0:2]:
             # print("------")
             # print("1)", f"{checksum:#010x}")
@@ -340,19 +351,36 @@ class SaveEntry(BinaryReadWriteable):
             # print("6)", f"{checksum:#010x}")
             assert checksum <= 0xFFFFFFFF
 
-        print("partial", hex(checksum))
+        partial_checksum = int(np.uint32(checksum) ^ 0xFFFFFFFF)
+        print("partial", hex(partial_checksum))
 
-        partial_checksum = int(~np.uint32(checksum))
+        data[56:60] = partial_checksum.to_bytes(4, "little")
+        print(bytes(data[0:61]))
+        # print(len(data))
+        # print(bytes(data[0x3CD0 : 0x3CDC + 4]))
+        # assert False
 
-        output_stream.getbuffer()[56:60] = partial_checksum.to_bytes(4, "little")
-        for byte in output_stream.getbuffer()[0:0x3CDC]:
+        checksum: int = 0xFFFFFFFF
+        for byte in data[0:0x3CDC]:
+            # print("------")
+            # print("1)", f"{checksum:#010x}")
+            # print("2)", f"{byte:#010x}")
+            # print("3)", f"{checksum ^ byte:#010x}")
+            # print("4)", f"{(checksum ^ byte) & 0xFF:#010x}")
+
             lookup = checksum_mapping[(checksum ^ byte) & 0xFF]
+
+            # print("5)", f"{lookup:#010x}")
+
             checksum = int(np.uint32(lookup) ^ np.uint32(checksum) >> 8)
             assert checksum <= 0xFFFFFFFF
 
+            # print("6)", f"{checksum:#010x}")
+
+        checksum = int(np.uint32(checksum) ^ 0xFFFFFFFF)
         print("final", hex(checksum))
 
-        return int(~np.uint32(checksum))
+        return checksum
 
 
 @dcs.dataclass_struct(size="std", byteorder="little")
