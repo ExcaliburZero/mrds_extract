@@ -4,4 +4,69 @@ version = "0.1.0"
 description = "Tool for extracting data from Monster Rancher DS"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = ["dataclasses-struct>=1.1.0"]
+
+[project.optional-dependencies]
+test = ["ty==0.0.1a13", "ruff==0.12.2", "taskipy", "pandas-stubs", "pytest", "pytest-cov"]
+
+[project.scripts]
+mrds-extract-save = "mrds_extract.extract_save:main_without_args"
+
+[tool.setuptools]
+packages = ["mrds_util", "mrds_extract"]
+
+[tool.taskipy.tasks]
+lint = "task lint_ty && task lint_ruff && task lint_ruff_format"
+lint_ty = "ty check"
+lint_ruff = "ruff check"
+lint_ruff_format = "ruff format --check"
+
+[tool.ruff]
+line-length = 100
+exclude = ["build", "docs"]
+
+[tool.ruff.lint]
+select = [
+    "S",    # flake8-bandit
+    "B",    # flake8-bugbear
+    "A",    # flake8-builtins
+    "C4",   # flake8-comprehensions
+    "T10",  # flake8-debugger
+    "ISC",  # flake8-implicit-str-concat
+    "ICN",  # flake8-import-conventions
+    "LOG",  # flake8-logging
+    "G",    # flake8-logging-format
+    "INP",  # flake8-no-pep420
+    "PIE",  # flake8-pie
+    "T20",  # flake8-print
+    "PYI",  # flake8-pyi
+    "Q",    # flake8-quotes
+    "RSE",  # flake8-raise
+    "RET",  # flake8-return
+    "SLF",  # flake8-self
+    "SIM",  # flake8-simplify
+    "SLOT", # flake8-slots
+    "TID",  # flake8-tidy-imports
+    "TC",   # flake8-type-checking
+    "PTH",  # flake8-use-pathlib
+    "FLY",  # flynt
+    "I",    # isort
+    "PD",   # pandas-vet
+    "N",    # pep8-naming
+    "PERF", # Perflint
+    "F",    # Pyflakes
+    "UP",   # pyupgrade
+    "FURB", # refurb
+    "RUF",  # Ruff-specific rule
+    "TRY",  # tryceratops
+]
+ignore = [
+    "PIE808", # Unnecessary `start` argument in `range`
+    "RET505", # Unnecessary `elif` after `return` statement
+    "RET507", # Unnecessary `elif` after `continue` statement
+    "TC001",  # Move application import into a type-checking block
+    "TC002",  # Move third-party import into a type-checking block
+    "TC003",  # Move standard library import into a type-checking block
+    "UP007",  # Use `X | Y` for type annotations
+    "UP045",  # Use `X | None` for type annotations
+]
