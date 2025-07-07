@@ -44,7 +44,17 @@ def main(argv: list[str]) -> int:
         with save_file_path.open("rb") as input_stream:
             save_file = SaveFile.from_bin(input_stream)
 
-        logger.info(save_file)
+        # with save_file_path.open("rb") as input_stream:
+        #    input_stream.read(30 + 64)
+        #    s = 0
+        #    for _ in range(0, int((15524 - 0) / 4)):
+        #        c = int.from_bytes(input_stream.read(4), "little")
+        #        s = (s + c) & 0xFFFFFFFF
+
+        # logger.info(save_file)
+        logger.info(f"{save_file.entries[0].calculate_checksum():#010x}")
+
+        # logger.info(s.to_bytes(4, "little"))
 
     return SUCCESS
 
