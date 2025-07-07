@@ -22,8 +22,20 @@ def create_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def setup_logger(logger: logging.Logger) -> None:
+    logger.setLevel(logging.INFO)
+
+    formatter = logging.Formatter("%(levelname)s> %(message)s")
+
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.INFO)
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+
+
 def main(argv: list[str]) -> int:
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
+    setup_logger(logger)
 
     parser = create_arg_parser()
     args = Args(**vars(parser.parse_args(argv)))  # ty: ignore[missing-argument]
