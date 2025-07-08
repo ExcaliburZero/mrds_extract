@@ -1,0 +1,49 @@
+name: Test
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+          - os: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: |
+          uv python install
+          uv venv
+
+      - name: Install dependencies
+        run: |
+          uv pip install '.[test]'
+
+      - name: Lint
+        run: |
+          uv run task lint
+
+      - name: Run tests
+        run: |
+          uv run task test
+
+      - name: Qlty coverage report
+        if: matrix.os == 'ubuntu-latest'
+        uses: qltysh/qlty-action/coverage@v1
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage.info
