@@ -21,6 +21,11 @@ $ mrds-extract-save --save_file '.\tests\data\save_files\5160 - Monster Rancher 
 $ mrds-fix-save-checksums '.\tests\data\save_files\5160 - Monster Rancher DS (U)(Independent) - 01 - After returning to ranch.sav'
 INFO> All checksums are already correct.
 INFO> Wrote updated save file to: tests\data\save_files\5160 - Monster Rancher DS (U)(Independent) - 01 - After returning to ranch.sav
+$ mrds-fix-save-checksums '.\tests\data\save_files_edited\5160 - Monster Rancher DS (U)(Independent) - 01 - After returning to ranch.sav'
+INFO> Updated checksums:
+INFO>   1st header checksum from 0xba4928f9 to 0xa7029e13
+INFO>   1st body   checksum from 0x47d25c5d to 0x0015d247
+INFO> Wrote updated save file to: tests\data\save_files_edited\5160 - Monster Rancher DS (U)(Independent) - 01 - After returning to ranch.sav
 ```
 
 ## Development
