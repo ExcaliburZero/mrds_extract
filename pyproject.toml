@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Tool for extracting data from Monster Rancher DS"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = ["dataclasses-struct>=1.1.0"]
+dependencies = ["dataclasses-struct>=1.1.0", "numpy"]
 
 [project.optional-dependencies]
 test = ["ty==0.0.1a13", "ruff==0.12.2", "taskipy", "pandas-stubs", "pytest", "pytest-cov"]
@@ -23,6 +23,8 @@ lint = "task lint_ty && task lint_ruff && task lint_ruff_format"
 lint_ty = "ty check"
 lint_ruff = "ruff check"
 lint_ruff_format = "ruff format --check"
+test = "task test_unit_tests"
+test_unit_tests = "pytest --cov-report=html:coverage --cov-report=lcov:coverage.info --cov=mrds_util --cov=mrds_extract tests"
 
 [tool.ruff]
 line-length = 100

@@ -55,12 +55,12 @@ class SaveEntry(BinaryReadWriteable):
     unknown_e: Annotated[bytes, 2104]
     body_checksum: dcs.U32
 
-    def update_checksum(self) -> None:
-        checksums = self.calculate_checksum()
+    def update_checksums(self) -> None:
+        checksums = self.calculate_checksums()
         self.header_checksum = checksums.header_checksum
         self.body_checksum = checksums.body_checksum
 
-    def calculate_checksum(self) -> Checksums:
+    def calculate_checksums(self) -> Checksums:
         checksum: int = 0xFFFFFFFF
 
         checksum_mapping: list[int] = [

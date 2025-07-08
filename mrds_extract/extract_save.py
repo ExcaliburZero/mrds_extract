@@ -52,7 +52,7 @@ def main(argv: list[str]) -> int:
             save_entry.monsters[0].power = 999
             # print("save_entry.ranch_name:", save_entry.ranch_name)
             # print("====AFTER:", save_entry.calculate_checksum())
-            save_entry.update_checksum()
+            save_entry.update_checksums()
             # print("====AFTER UPDATE:", save_entry.calculate_checksum(), save_entry.checksum)
 
         # print(save_file.entries[0].monsters[0].power)
