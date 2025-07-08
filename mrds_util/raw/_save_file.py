@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+from dataclasses import dataclass
 from typing import Annotated
 
 import dataclasses_struct as dcs
@@ -35,21 +36,31 @@ from mrds_util.raw._util import BinaryReadWriteable
 # First byte of unknown_a is incremented twice before checksumming for who knows what reason...
 
 
+@dataclass
+class Checksums:
+    header_checksum: int
+    body_checksum: int
+
+
 @dcs.dataclass_struct(size="std", byteorder="little")
 class SaveEntry(BinaryReadWriteable):
     unknown_a: Annotated[bytes, 10]
     ranch_name: Annotated[bytes, 13]
     unknown_b: Annotated[bytes, 4]
     player_name: Annotated[bytes, 13]
-    unknown_c: Annotated[bytes, 416]
+    unknown_c: Annotated[bytes, 16]
+    header_checksum: dcs.U32
+    unknown_d: Annotated[bytes, 396]
     monsters: Annotated[list[Monster], 31]  # Current monster, then 30 in storage
     unknown_e: Annotated[bytes, 2104]
-    checksum: dcs.U32
+    body_checksum: dcs.U32
 
     def update_checksum(self) -> None:
-        self.checksum = self.calculate_checksum()
+        checksums = self.calculate_checksum()
+        self.header_checksum = checksums.header_checksum
+        self.body_checksum = checksums.body_checksum
 
-    def calculate_checksum(self) -> int:
+    def calculate_checksum(self) -> Checksums:
         checksum: int = 0xFFFFFFFF
 
         checksum_mapping: list[int] = [
@@ -309,13 +320,6 @@ class SaveEntry(BinaryReadWriteable):
             0xC30C8EA1,  # 0xfd
             0x5A05DF1B,  # 0xfe
             0x2D02EF8D,  # 0xff
-            # 0xE23A39D2,  # 0x100
-            # 0xC6A33D19,
-            # 0x209360F4,
-            # 0xD2C7CCE2,
-            # 0x79AE70B4,
-            # 0x8CA93127,
-            # 0x42D027BD,
         ]
 
         output_stream = io.BytesIO()
@@ -354,10 +358,10 @@ class SaveEntry(BinaryReadWriteable):
             # print("6)", f"{checksum:#010x}")
             assert checksum <= 0xFFFFFFFF
 
-        partial_checksum = int(np.uint32(checksum) ^ 0xFFFFFFFF)
-        print("partial", hex(partial_checksum))
+        header_checksum = int(np.uint32(checksum) ^ 0xFFFFFFFF)
+        print("partial", hex(header_checksum))
 
-        data[56:60] = partial_checksum.to_bytes(4, "little")
+        data[56:60] = header_checksum.to_bytes(4, "little")
         print(bytes(data[0:61]))
         # print(len(data))
         # print(bytes(data[0x3CD0 : 0x3CDC + 4]))
@@ -383,7 +387,7 @@ class SaveEntry(BinaryReadWriteable):
         checksum = int(np.uint32(checksum) ^ 0xFFFFFFFF)
         print("final", hex(checksum))
 
-        return checksum
+        return Checksums(header_checksum=header_checksum, body_checksum=checksum)
 
 
 @dcs.dataclass_struct(size="std", byteorder="little")
