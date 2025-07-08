@@ -326,6 +326,9 @@ class SaveEntry(BinaryReadWriteable):
 
         # TODO: figure out what to do with this
         # data[0] += 1
+        print("hash str:", hash(str(data)))
+        print(data[0:10])
+        print(data[-10:])
 
         # for byte in output_stream.getbuffer()[0:56]:
         print("initial", hex(checksum))
@@ -347,7 +350,7 @@ class SaveEntry(BinaryReadWriteable):
             # checksum = int(
             #    ~(np.uint32(checksum_mapping[(checksum ^ byte) & 0xFF]) ^ np.uint32(checksum) >> 8)
             # )  # Had to do the ~ here to match the behavior
-            # ^^^^ I think this seemed needed due to a literal encoding error, but was not actually needed
+            # ^^^^ I think this seemed needed due to a lieral encoding error, but was not actually needed
             # print("6)", f"{checksum:#010x}")
             assert checksum <= 0xFFFFFFFF
 

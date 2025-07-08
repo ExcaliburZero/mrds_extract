@@ -46,8 +46,14 @@ def main(argv: list[str]) -> int:
 
         for save_entry in save_file.entries:
             # save_entry.monsters[0].power = 999
-            save_entry.ranch_name = "Undertale".encode("ascii")
+            print("====BEFORE:", save_entry.calculate_checksum())
+            print("save_entry.ranch_name:", save_entry.ranch_name, save_entry.checksum)
+            # save_entry.ranch_name = "Undertale".encode("ascii")
+            save_entry.monsters[0].power = 999
+            print("save_entry.ranch_name:", save_entry.ranch_name)
+            print("====AFTER:", save_entry.calculate_checksum())
             save_entry.update_checksum()
+            print("====AFTER UPDATE:", save_entry.calculate_checksum(), save_entry.checksum)
 
         # print(save_file.entries[0].monsters[0].power)
 
