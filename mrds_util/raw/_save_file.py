@@ -70,5 +70,15 @@ class SaveEntry(BinaryReadWriteable):
 
 @dcs.dataclass_struct(size="std", byteorder="little")
 class SaveFile(BinaryReadWriteable):
+    """
+    Representation of a "*.sav" save file for the game.
+
+    The save file has two SaveEntry sections. Likely this was done as a save data corruption
+    mitigation strategy. In case the game is powered off in the middle of a save, only one of the
+    two SaveEntries will be partially written (and thus potentially corrupted). The game can detect
+    via checksums if one of the SaveEntries is corrupted, and if so use the other SaveEntry. If
+    both are corrupted, then the game clears the save data.
+    """
+
     header: Annotated[bytes, 34]  # Game name twice?
     entries: Annotated[list[SaveEntry], 2]
