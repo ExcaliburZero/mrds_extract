@@ -1,8 +1,10 @@
 import argparse
+import json
 import logging
 import pathlib
 import sys
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from typing import Any
 
 from mrds_util.raw import SaveFile
 
@@ -44,37 +46,22 @@ def main(argv: list[str]) -> int:
         with save_file_path.open("rb") as input_stream:
             save_file = SaveFile.from_bin(input_stream)
 
-        for save_entry in save_file.entries:
-            # save_entry.monsters[0].power = 999
-            # print("====BEFORE:", save_entry.calculate_checksum())
-            # print("save_entry.ranch_name:", save_entry.ranch_name, save_entry.checksum)
-            save_entry.ranch_name = "Undertale".encode("ascii")
-            save_entry.monsters[0].power = 999
-            # print("save_entry.ranch_name:", save_entry.ranch_name)
-            # print("====AFTER:", save_entry.calculate_checksum())
-            save_entry.update_checksums()
-            # print("====AFTER UPDATE:", save_entry.calculate_checksum(), save_entry.checksum)
-
-        # print(save_file.entries[0].monsters[0].power)
-
-        # with save_file_path.open("rb") as input_stream:
-        #    input_stream.read(30 + 64)
-        #    s = 0
-        #    for _ in range(0, int((15524 - 0) / 4)):
-        #        c = int.from_bytes(input_stream.read(4), "little")
-        #        s = (s + c) & 0xFFFFFFFF
-
-        # logger.info(save_file)
-        # logger.info(f"{save_file.entries[0].calculate_checksum():#010x}")
-
-        output_filepath = save_file_path.with_name("updated.sav")
-        with output_filepath.open("wb") as output_stream:
-            save_file.write_bin(output_stream)
-        logger.info(f"Wrote updated save file to: {output_filepath}")
-
-        # logger.info(s.to_bytes(4, "little"))
+        output_filepath = save_file_path.with_suffix(".json")
+        with output_filepath.open("w", encoding="utf8") as output_stream:
+            json.dump(jsonize(asdict(save_file)), output_stream, indent=4)
 
     return SUCCESS
+
+
+def jsonize(obj: Any) -> Any:
+    if isinstance(obj, list):
+        return [jsonize(o) for o in obj]
+    elif isinstance(obj, dict):
+        return {jsonize(k): jsonize(v) for k, v in obj.items()}
+    elif isinstance(obj, bytes):
+        return str(obj)
+
+    return obj
 
 
 def main_without_args() -> int:
