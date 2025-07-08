@@ -1,6 +1,7 @@
 .coverage
 coverage.info
 .qlty/
+/main.py
 
 # Python-generated files
 __pycache__/
