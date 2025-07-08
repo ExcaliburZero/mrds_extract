@@ -3,8 +3,25 @@
 `mrds_extract` is a set of tools for extracting data from and working with save data for the Nintendo DS game Monster Rancher DS.
 
 ## Tools
-* `mrds-extract-save` - Converts a `*.sav` save file to a (mostly) human-readable JSON file.
-* `mrds-fix-save-checksums` - Fixes the checksums of a modified save file to get the game to not detect it as corrupted.
+
+- `mrds-extract-save` - Converts a `*.sav` save file to a (mostly) human-readable JSON file.
+- `mrds-fix-save-checksums` - Fixes the checksums of a modified save file to get the game to not detect it as corrupted.
+
+## Usage
+
+### mrds-extract-save
+
+```console
+$ mrds-extract-save --save_file '.\tests\data\save_files\5160 - Monster Rancher DS (U)(Independent) - 01 - After returning to ranch.sav'
+```
+
+### mrds-extract-save
+
+```console
+$ mrds-fix-save-checksums '.\tests\data\save_files\5160 - Monster Rancher DS (U)(Independent) - 01 - After returning to ranch.sav'
+INFO> All checksums are already correct.
+INFO> Wrote updated save file to: tests\data\save_files\5160 - Monster Rancher DS (U)(Independent) - 01 - After returning to ranch.sav
+```
 
 ## Development
 
@@ -14,8 +31,20 @@
 uv run pip install -e .[test]
 ```
 
+### Formatting
+
+```bash
+uv run task format
+```
+
 ### Linting
 
 ```bash
 uv run task lint
+```
+
+### Testing
+
+```bash
+uv run task test
 ```
