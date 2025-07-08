@@ -1,13 +1,15 @@
 struct Monster {
     u8 name[12];
-    u8 unknown_a[28];
+    u8 unknown_a[6];
+    u16 species_id;
+    u8 unknown_b[20];
     u16 power;
     u16 intelligence;
     u16 skill;
     u16 speed;
     u16 defense;
     u16 life;
-    u8 unknown_b[368];
+    u8 unknown_c[368];
 };
 
 struct SaveEntry {
