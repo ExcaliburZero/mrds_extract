@@ -66,6 +66,7 @@ select = [
     "TRY",  # tryceratops
 ]
 ignore = [
+    "G004",   # Logging statement uses f-string
     "PIE808", # Unnecessary `start` argument in `range`
     "RET505", # Unnecessary `elif` after `return` statement
     "RET507", # Unnecessary `elif` after `continue` statement
@@ -74,4 +75,10 @@ ignore = [
     "TC003",  # Move standard library import into a type-checking block
     "UP007",  # Use `X | Y` for type annotations
     "UP045",  # Use `X | None` for type annotations
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",  # Use of `assert` detected
+    "T201",  # `print` found
 ]
