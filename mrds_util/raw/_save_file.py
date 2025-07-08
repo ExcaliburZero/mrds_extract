@@ -14,7 +14,7 @@ SAVE_ENTRY_HEADER_SIZE = 56
 SAVE_ENTRY_HEADER_PLUS_BODY_SIZE = 0x3CDC
 
 
-@dataclass
+@dataclass(frozen=True)
 class Checksums:
     header_checksum: int
     body_checksum: int

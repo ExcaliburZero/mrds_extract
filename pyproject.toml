@@ -11,6 +11,7 @@ test = ["ty==0.0.1a13", "ruff==0.12.2", "taskipy", "pandas-stubs", "pytest", "py
 
 [project.scripts]
 mrds-extract-save = "mrds_extract.extract_save:main_without_args"
+mrds-fix-save-checksums = "mrds_extract.fix_save_checksums:main_without_args"
 
 [tool.setuptools]
 packages = ["mrds_util", "mrds_extract"]
