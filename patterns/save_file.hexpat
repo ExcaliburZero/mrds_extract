@@ -19,9 +19,11 @@ struct SaveEntry {
     u8 player_name[13];
     u8 unknown_c[16];
     u32 header_checksum;
-    u8 unknown_d[396];
+    u8 unknown_d[292];
+    u32 gold;
+    u8 unknown_e[100];
     Monster monsters[31];
-    u8 unknown_e[2104];
+    u8 unknown_f[2104];
     u32 checksum;
 };
 

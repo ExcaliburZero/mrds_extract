@@ -28,9 +28,11 @@ class SaveEntry(BinaryReadWriteable):
     player_name: Annotated[bytes, 13]
     unknown_c: Annotated[bytes, 16]
     header_checksum: dcs.U32
-    unknown_d: Annotated[bytes, 396]
+    unknown_d: Annotated[bytes, 292]
+    gold: dcs.U32
+    unknown_e: Annotated[bytes, 100]
     monsters: Annotated[list[Monster], 31]  # Current monster, then 30 in storage
-    unknown_e: Annotated[bytes, 2104]
+    unknown_f: Annotated[bytes, 2104]
     body_checksum: dcs.U32
 
     def update_checksums(self) -> None:
