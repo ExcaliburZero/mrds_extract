@@ -21,7 +21,7 @@ struct SaveEntry {
     u32 header_checksum;
     u8 unknown_d[292];
     u32 gold;
-    u8 unknown_e[100];
+    u16 items[50];
     Monster monsters[31];
     u8 unknown_f[2104];
     u32 checksum;
