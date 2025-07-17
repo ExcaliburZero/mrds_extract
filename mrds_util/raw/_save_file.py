@@ -84,4 +84,4 @@ class SaveFile(BinaryReadWriteable):
 
     header: Annotated[bytes, 34]  # Game name twice?
     entries: Annotated[list[SaveEntry], 2]
-    end_padding: Annotated[bytes, 34334]
+    end_padding: Annotated[bytes, 1566]
