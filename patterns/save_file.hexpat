@@ -12,7 +12,10 @@ struct Monster {
     u16 speed;
     u16 defense;
     u16 life;
-    u8 unknown_d[368] [[color("000000")]];
+    u8 unknown_d[68] [[color("000000")]];
+    u8 past_activities[8];
+    u8 past_activity_results[8];
+    u8 unknown_e[284] [[color("000000")]];
 };
 
 struct SaveEntry {
@@ -23,7 +26,10 @@ struct SaveEntry {
     u8 ranch_name[13];
     u8 unknown_c[4] [[color("000000")]];
     u8 player_name[13];
-    u8 unknown_d[12] [[color("000000")]];
+    u8 unknown_d[8] [[color("000000")]];
+    u16 year;
+    u8 month;
+    u8 week;
     u8 day_of_week;
     u8 unknown_e[3] [[color("000000")]];
     u32 header_checksum;
@@ -34,8 +40,8 @@ struct SaveEntry {
     u8 unknown_h[80] [[color("000000")]];
     u8 monster_breed_max_grades[29];
     u8 unknown_i[63] [[color("000000")]];
-    u8 encyclopedia_unlocked_monsters[16];
-    u8 unknown_j[20] [[color("000000")]];
+    u8 encyclopedia_unlocked_monsters[34];
+    u8 unknown_j[2] [[color("000000")]];
     u32 gold;
     u16 items[50];
     Monster monsters[31];
