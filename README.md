@@ -15,7 +15,7 @@
 $ mrds-extract-save --save_file '.\tests\data\save_files\5160 - Monster Rancher DS (U)(Independent) - 01 - After returning to ranch.sav'
 ```
 
-### mrds-extract-save
+### mrds-fix-save-checksums
 
 ```console
 $ mrds-fix-save-checksums '.\tests\data\save_files\5160 - Monster Rancher DS (U)(Independent) - 01 - After returning to ranch.sav'
